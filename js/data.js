@@ -56,6 +56,6 @@ const addComment = () => ({
   //123
 });
   //123
-const addPhotosFunc = Array.from({length: 25}, addPhoto);
+const getPictures = Array.from({length: 25}, addPhoto);
 
-export{addPhotosFunc};
+export{getPictures};

@@ -1,2 +1,3 @@
-import { addPhotosFunc } from './data.js';
-import { renderPhotos } from './photos.js';
+import { getPictures } from './data.js';
+import { renderThumbnails } from './photos.js';
+renderThumbnails(getPictures());
