@@ -13,4 +13,20 @@ const getRandomInteger = (a, b) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export {getRandomArrayElement, getRandomInt};
+const Keys = {
+  ESCAPE : 'Escape',
+  ESC : 'Esc',
+
+};
+
+const isEscapeKey = (evt) => evt.key === Keys.ESCAPE || evt.key === Keys.ESC;
+
+const closeIsEscapeDown = (evt, cb) => {
+  if (isEscapeKey(evt)) {
+    cb();
+  };
+};
+
+
+
+export {getRandomArrayElement, getRandomInt, isEscapeKey, closeIsEscapeDown};
