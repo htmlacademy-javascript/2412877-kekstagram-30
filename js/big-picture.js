@@ -62,7 +62,7 @@ socialComments.appendChild(commentFragment);
 
 const onLoadCommentsButtonClick = () => {
 commentsCount += COMMENTS_STEP;
-renderComments;
+renderComments();
 
 };
 
