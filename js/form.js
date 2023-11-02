@@ -1,6 +1,6 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey } from './utils.js';
 import {scalePicture} from './scale-photo.js';
-import {getErrorMessage, validateHashtags} from './hastags-validation.js';
+import {getErrorMessage, validateHashtags} from './hastags.js';
 import { chooseEffect } from './effects.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
