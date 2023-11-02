@@ -46,15 +46,18 @@ const getLikes = getRandomInt (1, 200);
 const addPhoto = () => ({
 
   id: getPhotoId(),
-  url: 'photos/${ getRandomArrayElement(1, 25)}.jpg',
+  // eslint-disable-next-line no-template-curly-in-string
+  url: 'photos/${getRandomArrayElement(1, 25)}.jpg',
   description: getRandomArrayElement(DESCRIPTION),
   likes: getLikes(),
+  // eslint-disable-next-line no-use-before-define
   comments: Array.from({length: getRandomInt (0, 30) }, addComment)
 
 });
 
 const addComment = () => ({
   id: getCommentId(),
+  // eslint-disable-next-line no-template-curly-in-string
   avatar: 'img/avatar-${ getRandomArrayElement(1, 6) } .svg',
   message: getRandomArrayElement(COMMENTS),
   name: getRandomArrayElement(NAME)

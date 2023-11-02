@@ -1,4 +1,4 @@
-import { isEscapeKey } from "./utils";
+import { isEscapeKey } from './utils';
 
 const body = document.querySelector('body');
 const formUpload = document.querySelector('.img-upload__form');
@@ -42,5 +42,5 @@ fileUpLoad.addEventListener('change', onFileUploadChange);
 
 formUploadClose.addEventListener = ('click', () => {
 
-closeForm();
+  closeForm();
 });

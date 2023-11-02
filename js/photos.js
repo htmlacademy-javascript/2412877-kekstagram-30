@@ -6,13 +6,12 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 
 const renderPhoto = (picture) => {
 
-  const {url, comments, likes, description} = picture;
+  const {url, comments, likes} = picture;
   const pictureElement = pictureTemplate.cloneNode(true);
 
   pictureElement.querySelector('.picture__img').src = url;
   pictureElement.querySelector('.picture__comments').textContent = comments.length;
   pictureElement.querySelector('.picture__likes').textContent = likes;
-  pictureElement.querySelector('.picture__img').alt = description;
 
 
   const onPictureElementClick = (evt) => {
