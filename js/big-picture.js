@@ -30,7 +30,7 @@ renderComments = () => {
   loadComments.classList.remove('hidden');
   }
 
-  socialCommentsCount.innerHTML = $span class ={commentsCount}$ из $span class ={currentComments.length}$ комментариев;
+  //socialCommentsCount.innerHTML = $span class ={commentsCount}$ из $span class ={currentComments.length}$ комментариев;
 
   const commentFragment = document.createDocumentFragment();
 

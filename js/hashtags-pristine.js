@@ -51,10 +51,10 @@ const hashtagHandler = (value) => {
       error: 'Хештэг должен начинаться с символа #',
     },
 
-    {
-      check: inputArray.some((item) => item.indexOf('#', 1) => 1),
-      error: 'Хэштеги разделяются пробелами',
-    },
+    //{
+      //check: inputArray.some((item) => item.indexOf('#', 1) => 1),
+      //error: 'Хэштеги разделяются пробелами',
+   // },
 
     {
       check: inputArray.some((item, num, arr) => arr.includes(item, num + 1)),
