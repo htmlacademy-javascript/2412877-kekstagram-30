@@ -1,64 +1,57 @@
 const MAX_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
 
-const inputHashtag = document.querySelector('.text__hashtags');
+let errorMessage = '';
+const getErrorMessage = () => errorMessage;
 
-const addBorder = () => inputHashtag.style.border = '2px solid red';
+const regexp = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const removeBorder = () => inputHashtag.style.border = 'none';
+const validateHashtags = (hashtags) => {
+  const hashtagsString = hashtags.toLowerCase().trim();
+  const splitHashtags = hashtagsString.split(/\s+/);
 
-const onHashtagInput = () => {
-  inputHashtag.setCustomValidity('');
-
-  const inputText = inputHashtag.value.toLowerCase().trim();
-
-  if(!inputText) {
-    removeBorder();
-    return;
+  if (!hashtagsString) {
+    return true;
   }
 
-  const inputArray = inputText.split(/\s+/);
+  if (splitHashtags.length === 0) {
+    return true;
+  }
 
-  if(inputArray.length === 0) {
-    removeBorder();
-    return;
-  };
-
-  const invalidMessage = [];
   const rules = [
     {
-      check: inputArray.some((item) => item === '#'),
-      error: 'Хештэг не может состоять только из одной решётки',
+      check: splitHashtags.some((hashtag) => hashtag.indexOf('#', 1) >= 1),
+      error: 'Хэш-теги разделяются пробелами'
     },
-
     {
-      check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
-      error: 'Хештэг содержит недопустимые символы',
+      check: splitHashtags.some((hashtag) => hashtag[0] !== '#'),
+      error: 'Хэш-тег должен начинаться с символа #'
     },
-
     {
-      check: inputArray.some((item) => item[0] !== '#'),
-      error: 'Хештэг должен начинаться с символа #',
+      check: splitHashtags.some((hashtag, index, array) => array.includes(hashtag, index + 1)),
+      error: 'Хэш-теги не должны повторяться'
     },
-
     {
-      check: inputArray.some((item) => item.indexOf('#', 1) => 1),
-      error: 'Хэштеги разделяются пробелами',
+      check: splitHashtags.some((hashtag) => hashtag.length > MAX_SYMBOLS),
+      error: `Длинна хэш-тега не должна превышать ${MAX_SYMBOLS} символов, включая решетку`
     },
-
     {
-      check: inputArray.some((item, num, arr) => arr.includes(item, num + 1)),
-      error: 'Хэштеги не должны повторяться'
+      check: splitHashtags.length > MAX_HASHTAGS,
+      error: `К фото нельзя добавлять более ${MAX_HASHTAGS} хэш-тегов`
     },
-
     {
-      check: inputArray.some((item) => item.length > MAX_SYMBOLS),
-      error: 'Максимальная длина одного Хэштега ${MAX_SYMBOLS} символов, включая решётку',
-    },
-
-    {
-      check: inputArray.length > MAX_HASHTAGS,
-      error: 'Нельзя указать больше ${MAX_HASHTAGS} хештегов',
-    },
+      check: splitHashtags.some((hashtag) => !regexp.test(hashtag)),
+      error: 'Хэш-тег содержит запрещенные символы'
+    }
   ];
+
+  return rules.every((rule) => {
+    const isInvalid = rule.check;
+    if (isInvalid) {
+      errorMessage = rule.error;
+    }
+    return !isInvalid;
+  });
 };
+
+export {getErrorMessage, validateHashtags};

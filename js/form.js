@@ -1,46 +1,93 @@
-import { isEscapeKey } from './utils';
+import { isEscapeKey } from './util.js';
+import {scalePicture} from './scale-photo.js';
+import {getErrorMessage, validateHashtags} from './hastags-validation.js';
+import { chooseEffect } from './effects.js';
 
-const body = document.querySelector('body');
-const formUpload = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
-const fileUpLoad = document.querySelector('#upload-file');
-const formUploadClose = document.querySelector('#upload-cancel');
-const imagePreview = document.querySelector('.img-upload__preview');
+const uploadForm = document.querySelector('.img-upload__form');
+const uploadInput = document.querySelector('.img-upload__input');
+const editForm = document.querySelector('.img-upload__overlay');
+const editHashtagsInput = document.querySelector('.text__hashtags');
+const editCommentArea = document.querySelector('.text__description');
+const editCloseButton = document.querySelector('.img-upload__cancel');
+const submitButton = document.querySelector('.img-upload__submit');
+const scaleFormField = document.querySelector('.scale');
+const effectsList = document.querySelector('.effects__list');
 
-const closeForm = () => {
+const pristine = new Pristine(uploadForm , {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--invalid',
+  successClass: 'img-upload__field-wrapper--valid',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'form__error'
+});
 
-  overlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-  imagePreview.style.transform = '';
-  imagePreview.className = 'img-upload__preview';
-  imagePreview.style.filter = '';
-  formUpload.reset();
+const closeImgEditModal = () => {
+  editForm.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+
+  pristine.reset();
+  uploadInput.value = '';
+  editHashtagsInput.value = '';
+  editCommentArea.value = '';
+  document.querySelector('.img-upload__preview img').style.transform = 'scale(1)';
+  document.querySelector('.img-upload__effect-level').classList.add('hidden');
+  document.querySelector('.img-upload__preview img').style.filter = 'none';
 };
 
-const onCloseFormEscKeyDown = (evt) => {
-  if(isEscapeKey(evt) &&
+const onImgEditCloseButtonClick = () => {
+  closeImgEditModal();
 
-  evt.target.classList.contains('text__hashtags') &&
-  evt.target.classList.contains('text__description')
+  editCloseButton.removeEventListener('click', onImgEditCloseButtonClick);
+};
 
-  ){
+const onEscKeydown = (evt) => {
+  if (isEscapeKey(evt) &&
+  !evt.target.classList.contains('text__hashtags') &&
+  !evt.target.classList.contains('text__description')
+  ) {
     evt.preventDefault();
-    closeForm();
-    document.removeEventListener('keydown', onCloseFormEscKeyDown);
+
+    closeImgEditModal();
+
+    document.removeEventListener('keydown', onEscKeydown);
   }
-
 };
 
-const onFileUploadChange = () => {
-  overlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-
-  document.addEventListener('keydown', onCloseFormEscKeyDown);
+const openImgEditModal = () => {
+  editForm.classList.remove('hidden');
+  document.body.classList.add('modal-open');
 };
 
-fileUpLoad.addEventListener('change', onFileUploadChange);
+const onImgUploadButtonChange = () => {
+  openImgEditModal();
 
-formUploadClose.addEventListener = ('click', () => {
+  editCloseButton.addEventListener('click', onImgEditCloseButtonClick);
+  document.addEventListener('keydown', onEscKeydown);
+};
 
-  closeForm();
+uploadInput.addEventListener('change', onImgUploadButtonChange);
+
+scaleFormField.addEventListener('click', scalePicture);
+
+effectsList.addEventListener('click', chooseEffect);
+
+pristine.addValidator(editHashtagsInput, validateHashtags, getErrorMessage);
+
+const ohHashtagInput = () => {
+  if (pristine.validate()) {
+    submitButton.disabled = false;
+  } else {
+    submitButton.disabled = true;
+  }
+};
+
+editHashtagsInput.addEventListener('input', ohHashtagInput);
+
+uploadForm.addEventListener('submit', (evt) => {
+  const isValid = pristine.validate();
+
+  if(!isValid) {
+    evt.preventDefault();
+  }
 });
