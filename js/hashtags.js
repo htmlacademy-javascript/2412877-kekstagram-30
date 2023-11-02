@@ -54,4 +54,4 @@ const validateHashtags = (hashtags) => {
   });
 };
 
-export {getErrorMessage, validateHashtags};
+export {ErrorMessage, valHashtags};

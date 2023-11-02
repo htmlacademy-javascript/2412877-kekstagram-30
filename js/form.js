@@ -1,7 +1,7 @@
 import { isEscapeKey } from './utils.js';
 import {scalePicture} from './scale-photo.js';
-import {getErrorMessage, validateHashtags} from './hastags.js';
-import { chooseEffect } from './effects.js';
+import {ErrorMessage, valHashtags} from './hashtags.js';
+import { Effect } from './effects.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = document.querySelector('.img-upload__input');
@@ -70,9 +70,9 @@ uploadInput.addEventListener('change', onImgUploadButtonChange);
 
 scaleFormField.addEventListener('click', scalePicture);
 
-effectsList.addEventListener('click', chooseEffect);
+effectsList.addEventListener('click', Effect);
 
-pristine.addValidator(editHashtagsInput, validateHashtags, getErrorMessage);
+pristine.addValidator(editHashtagsInput, valHashtags, ErrorMessage);
 
 const ohHashtagInput = () => {
   if (pristine.validate()) {

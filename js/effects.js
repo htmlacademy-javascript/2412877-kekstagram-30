@@ -87,4 +87,4 @@ const chooseEffect = (evt) => {
 
 };
 
-export {chooseEffect};
+export {Effect};
