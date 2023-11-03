@@ -1,4 +1,4 @@
-import { isEscapeKey } from './utils.js';
+import { isEscapeKey } from './util.js';
 
 const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureCloseButton = bigPictureContainer.querySelector('.big-picture__cancel');
