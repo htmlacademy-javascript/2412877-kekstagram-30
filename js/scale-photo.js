@@ -32,3 +32,43 @@ const scalePicture = (evt) => {
 };
 
 export {scalePicture};
+
+/*const Zoom = {
+  MIN: 25,
+  MAX: 100,
+  STEP: 25,
+};
+
+const body = document.querySelector('body');
+const scaleControlInput = document.querySelector('.scale__control--value');
+const defaultImg = document.querySelector('.img-upload__preview');// img
+const minusButton = body.querySelector('.scale__control--smaler');
+const plusButton = body.querySelector('.scale__control--bigger');
+
+const changeZoom = (factor = 1) => {
+  let size = parseInt(scaleControlInput.value, 10) + (Zoom.STEP * factor);
+
+  if(size < Zoom.MIN) {
+    size = Zoom.MIN;
+  }
+
+  if(size > Zoom.MAX) {
+    size = Zoom.MAX
+  }
+
+  scaleControlInput.value = `${size}%`;
+  defaultImg.style.transform = `scale(${size / 100})`;
+
+};
+
+const onMinusButtonClick = () => {
+  changeZoom(-1);
+};
+
+const onPlusButtonClick = () => {
+  changeZoom();
+};
+
+minusButton.addEventListener('click', onMinusButtonClick);
+plusButton.addEventListener('click', onPlusButtonClick);
+*/

@@ -1,19 +1,19 @@
-import { isEscapeKey } from './utils.js';
-import {scalePicture} from './scale-photo.js';
-import {ErrorMessage, valHashtags} from './hashtags.js';
-import { Effect } from './effects.js';
+import {isEscapeKey} from './utils.js';
+import {scalePicture} from './scale-photo.js';//
+import {getErrorMessage, validateHashtags} from './hashtags.js';
+import {chooseEffect} from './effects.js';
 
-const uploadForm = document.querySelector('.img-upload__form');
-const uploadInput = document.querySelector('.img-upload__input');
-const editForm = document.querySelector('.img-upload__overlay');
-const editHashtagsInput = document.querySelector('.text__hashtags');
-const editCommentArea = document.querySelector('.text__description');
-const editCloseButton = document.querySelector('.img-upload__cancel');
-const submitButton = document.querySelector('.img-upload__submit');
+const imgUploadForm = document.querySelector('.img-upload__form');
+const imgUploadInput = document.querySelector('.img-upload__input');
+const imgEditForm = document.querySelector('.img-upload__overlay');
+const imgEditHashtagsInput = document.querySelector('.text__hashtags');
+const imgEditCommentArea = document.querySelector('.text__description');
+const imgEditCloseButton = document.querySelector('.img-upload__cancel');
+const imgEditSubmitButton = document.querySelector('.img-upload__submit');
 const scaleFormField = document.querySelector('.scale');
 const effectsList = document.querySelector('.effects__list');
 
-const pristine = new Pristine(uploadForm , {
+const pristine = new Pristine(imgUploadForm , {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--invalid',
   successClass: 'img-upload__field-wrapper--valid',
@@ -23,13 +23,13 @@ const pristine = new Pristine(uploadForm , {
 });
 
 const closeImgEditModal = () => {
-  editForm.classList.add('hidden');
+  imgEditForm.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   pristine.reset();
-  uploadInput.value = '';
-  editHashtagsInput.value = '';
-  editCommentArea.value = '';
+  imgUploadInput.value = '';
+  imgEditHashtagsInput.value = '';
+  imgEditCommentArea.value = '';
   document.querySelector('.img-upload__preview img').style.transform = 'scale(1)';
   document.querySelector('.img-upload__effect-level').classList.add('hidden');
   document.querySelector('.img-upload__preview img').style.filter = 'none';
@@ -38,7 +38,7 @@ const closeImgEditModal = () => {
 const onImgEditCloseButtonClick = () => {
   closeImgEditModal();
 
-  editCloseButton.removeEventListener('click', onImgEditCloseButtonClick);
+  imgEditCloseButton.removeEventListener('click', onImgEditCloseButtonClick);
 };
 
 const onEscKeydown = (evt) => {
@@ -55,39 +55,40 @@ const onEscKeydown = (evt) => {
 };
 
 const openImgEditModal = () => {
-  editForm.classList.remove('hidden');
+  imgEditForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
 };
 
 const onImgUploadButtonChange = () => {
   openImgEditModal();
 
-  editCloseButton.addEventListener('click', onImgEditCloseButtonClick);
+  imgEditCloseButton.addEventListener('click', onImgEditCloseButtonClick);
   document.addEventListener('keydown', onEscKeydown);
 };
 
-uploadInput.addEventListener('change', onImgUploadButtonChange);
+imgUploadInput.addEventListener('change', onImgUploadButtonChange);
 
 scaleFormField.addEventListener('click', scalePicture);
 
-effectsList.addEventListener('click', Effect);
+effectsList.addEventListener('click', chooseEffect);
 
-pristine.addValidator(editHashtagsInput, valHashtags, ErrorMessage);
+pristine.addValidator(imgEditHashtagsInput, validateHashtags, getErrorMessage);
 
 const ohHashtagInput = () => {
   if (pristine.validate()) {
-    submitButton.disabled = false;
+    imgEditSubmitButton.disabled = false;
   } else {
-    submitButton.disabled = true;
+    imgEditSubmitButton.disabled = true;
   }
 };
 
-editHashtagsInput.addEventListener('input', ohHashtagInput);
+imgEditHashtagsInput.addEventListener('input', ohHashtagInput);
 
-uploadForm.addEventListener('submit', (evt) => {
+imgUploadForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
 
   if(!isValid) {
     evt.preventDefault();
   }
 });
+
