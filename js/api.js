@@ -1,3 +1,16 @@
+const BASE_URL = 'https://30.javascript.pages.academy/kekstagram';
+const ROUTE = {
+  GET_DATA: '/data',
+  SEND_DATA: '/',
+};
+
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+
+
+
 const getData = (onSuccess, onFail) => fetch(
   'https://30.javascript.pages.academy/kekstagram/data')
   .then((response) => {
