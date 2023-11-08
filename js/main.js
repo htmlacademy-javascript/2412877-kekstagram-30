@@ -1,5 +1,8 @@
-import {photos} from './generate-photos.js';
+import {getData} from './api.js';
 import {renderPictures} from './renderPictures.js';
-import './image-upload-form.js';
+import {setImgUploadFormSubmit} from './image-upload-form.js';
+import {showDataErrorMessage, showStatusMessage} from './status-messages.js';
 
-renderPictures(photos);
+getData(renderPictures, showDataErrorMessage);
+
+setImgUploadFormSubmit(showStatusMessage);
