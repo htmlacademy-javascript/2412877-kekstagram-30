@@ -1,37 +1,27 @@
-const BASE_URL = 'https://30.javascript.pages.academy/kekstagram';
-const ROUTE = {
-  GET_DATA: '/data',
-  SEND_DATA: '/',
+const Urls = {
+  GET: 'https://30.javascript.pages.academy/kekstagram/data',
+  POST: 'https://30.javascript.pages.academy/kekstagram',
 };
 
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-};
-
-
-
-const getData = (onSuccess, onFail) => fetch(
-  'https://30.javascript.pages.academy/kekstagram/data')
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error();
-    }
-    return response.json();
-  })
-  .then((photos) => onSuccess(photos))
-  .catch(() => {
-    onFail();
-  });
-
-const sendData = (body) =>
+const sendRequest = (onSuccess, onFail, method, body) => {
   fetch(
-    'https://30.javascript.pages.academy/kekstagram',
+    Urls[method],
     {
-      method: 'POST',
+      method: method,
       body: body,
     },
-  );
 
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      onSuccess(data);
+    })
+    .catch((err) => {
+      onFail(err);
+    });
+};
+
+const getData = (onSuccess, onFail, method = 'GET') => sendRequest(onSuccess, onFail, method);
+const sendData = (onSuccess, onFail, method = 'POST', body) => sendRequest(onSuccess, onFail, method, body);
 
 export {getData, sendData};
