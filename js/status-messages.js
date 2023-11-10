@@ -1,6 +1,6 @@
 import { isEscapeKey } from './util.js';
 
-const DATA_ERROR_SHOWN_TIME = 5000;
+const REMOVE_MESSAGE_TIMEOUT = 5000;
 
 const dataErrorMessageTemplate = document.querySelector('#data-error')
   .content
@@ -90,7 +90,7 @@ const showDataErrorMessage = () => {
 
   setTimeout(() => {
     dataErrorMessage.remove();
-  }, DATA_ERROR_SHOWN_TIME);
+  }, REMOVE_MESSAGE_TIMEOUT);
 };
 
 export {showDataErrorMessage, showStatusMessage, successMessage, errorMessage};

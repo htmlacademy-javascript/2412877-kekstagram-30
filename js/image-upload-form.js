@@ -83,6 +83,7 @@ plusButton.addEventListener('click', onPlusButtonClick);
 
 pristine.addValidator(imgEditHashtagsInput, validateHashtags, getErrorMessage);
 
+
 const ohHashtagInput = () => {
   if (pristine.validate()) {
     imgEditSubmitButton.disabled = false;
