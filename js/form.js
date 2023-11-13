@@ -1,9 +1,12 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey } from './utils.js';
 import {onMinusButtonClick, onPlusButtonClick} from './scale-photo.js';
 import {getErrorMessage, validateHashtags} from './hastags-validation.js';
 import {sliderField, image} from './apply-effects.js';
-import {successMessage, errorMessage} from './status-messages.js';
+import {onSuccess, onFail} from './messages.js';
 import {sendData} from './api.js';
+
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const COMMENT_FIELD_ERROR = 'Длина вашего комментария больше 140 символов';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadInput = imgUploadForm.querySelector('.img-upload__input');
@@ -14,6 +17,8 @@ const imgEditCloseButton = imgUploadForm.querySelector('.img-upload__cancel');
 const imgEditSubmitButton = imgUploadForm.querySelector('.img-upload__submit');
 const minusButton = imgUploadForm.querySelector('.scale__control--smaller');
 const plusButton = imgUploadForm.querySelector('.scale__control--bigger');
+const imgPreview = imgUploadForm.querySelector('.img-upload__preview img');
+const effectsPreview = imgUploadForm.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(imgUploadForm , {
   classTo: 'img-upload__field-wrapper',
@@ -21,48 +26,48 @@ const pristine = new Pristine(imgUploadForm , {
   successClass: 'img-upload__field-wrapper--valid',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
-  errorTextClass: 'img-upload__field-wrapper--error',
+  errorTextClass: 'img-upload__field-wrapper--error'
 });
 
 const resetForm = () => {
   imgUploadForm.reset();
-
   pristine.reset();
+
   imgUploadInput.value = '';
   imgEditHashtagsInput.value = '';
   imgEditCommentArea.value = '';
+  imgEditSubmitButton.disabled = false;
 
   sliderField.classList.add('hidden');
   image.style.transform = 'scale(1)';
   image.style.filter = 'none';
 };
 
-const closeImgEditModal = () => {
-  imgEditForm.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-
-  resetForm();
-};
-
 const onEscKeydown = (evt) => {
+
   if (isEscapeKey(evt) &&
   !evt.target.classList.contains('text__hashtags') &&
-  !evt.target.classList.contains('text__description')
-  ) {
+  !evt.target.classList.contains('text__description') &&
+  document.querySelector('.error') === null) {
     evt.preventDefault();
 
     closeImgEditModal();
-
-    document.removeEventListener('keydown', onEscKeydown);
   }
 };
 
 const onImgEditCloseButtonClick = () => {
   closeImgEditModal();
+};
+
+function closeImgEditModal () {
+  imgEditForm.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+
+  resetForm();
 
   imgEditCloseButton.removeEventListener('click', onImgEditCloseButtonClick);
   document.removeEventListener('keydown', onEscKeydown);
-};
+}
 
 const openImgEditModal = () => {
   imgEditForm.classList.remove('hidden');
@@ -71,6 +76,19 @@ const openImgEditModal = () => {
 
 const onImgUploadButtonChange = () => {
   openImgEditModal();
+
+  const file = imgUploadInput.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(file);
+
+    effectsPreview.forEach((preview) => {
+      preview.style.backgroundImage = `url(${imgPreview.src})`;
+    });
+  }
 
   imgEditCloseButton.addEventListener('click', onImgEditCloseButtonClick);
   document.addEventListener('keydown', onEscKeydown);
@@ -83,6 +101,9 @@ plusButton.addEventListener('click', onPlusButtonClick);
 
 pristine.addValidator(imgEditHashtagsInput, validateHashtags, getErrorMessage);
 
+const validateCommentMessage = (value) => value.length <= 140;
+
+pristine.addValidator(imgEditCommentArea, validateCommentMessage, COMMENT_FIELD_ERROR);
 
 const ohHashtagInput = () => {
   if (pristine.validate()) {
@@ -94,28 +115,26 @@ const ohHashtagInput = () => {
 
 imgEditHashtagsInput.addEventListener('input', ohHashtagInput);
 
-const setImgUploadFormSubmit = (onStatusChange) => {
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const isValid = pristine.validate();
-    if(isValid) {
-      const formData = new FormData(evt.target);
-
-      sendData(formData)
-        .then((response) => {
-          if (response.ok) {
-            onStatusChange(successMessage);
-            onImgEditCloseButtonClick();
-          } else {
-            throw new Error();
-          }
-        })
-        .catch(() => {
-          onStatusChange(errorMessage);
-        });
-    }
-  });
+const blockSubmitButton = () => {
+  imgEditSubmitButton.disabled = true;
 };
 
-export {setImgUploadFormSubmit};
+const unblockSubmitButton = () => {
+  document.querySelector('.img-upload__submit').disabled = false;
+};
+
+
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const isValid = pristine.validate();
+
+  if(isValid) {
+    const formData = new FormData(evt.target);
+    blockSubmitButton();
+
+    sendData(onSuccess, onFail, 'POST', formData);
+  }
+});
+
+export {closeImgEditModal, unblockSubmitButton};

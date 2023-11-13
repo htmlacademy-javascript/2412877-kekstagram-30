@@ -1,4 +1,4 @@
-import {openPicture} from './big-pictures.js';
+import {openPicture} from './full-pictures.js';
 
 const picturesContainer = document.querySelector('.pictures');
 
@@ -7,6 +7,14 @@ const pictureTemplate = document.querySelector('#picture')
   .querySelector('.picture');
 
 const picturesFragment = document.createDocumentFragment();
+
+const clearPictures = () => {
+  const picturesOnPage = picturesContainer.querySelectorAll('.picture');
+
+  if (picturesOnPage) {
+    picturesOnPage.forEach((picture) => picture.remove());
+  }
+};
 
 const renderPicture = (photo) => {
   const pictureElement = pictureTemplate.cloneNode(true);
@@ -34,6 +42,8 @@ const renderPictures = (photos) => {
     thumbnail.addEventListener('click', onThumbnailClick);
   });
 
+  clearPictures();
   picturesContainer.append(picturesFragment);
 };
+
 export {renderPictures};

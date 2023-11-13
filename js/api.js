@@ -1,32 +1,6 @@
-const getData = (onSuccess, onFail) => fetch(
-  'https://30.javascript.pages.academy/kekstagram/data')
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error();
-    }
-    return response.json();
-  })
-  .then((photos) => onSuccess(photos))
-  .catch(() => {
-    onFail();
-  });
-
-const sendData = (body) =>
-  fetch(
-    'https://30.javascript.pages.academy/kekstagram',
-    {
-      method: 'POST',
-      body: body,
-    },
-  );
-
-
-export {getData, sendData};
-
-
-/*const Urls = {
+const Urls = {
   GET: 'https://30.javascript.pages.academy/kekstagram/data',
-  POST: 'https://30.javascript.pages.academy/kekstagram',
+  POST: 'https://30.javascript.pages.academy/kekstagram/',
 };
 
 const sendRequest = (onSuccess, onFail, method, body) => {
@@ -36,9 +10,8 @@ const sendRequest = (onSuccess, onFail, method, body) => {
       method: method,
       body: body,
     },
-
   )
-    .then((response) => response.json())
+    .then((responce) => responce.json())
     .then((data) => {
       onSuccess(data);
     })
@@ -50,4 +23,4 @@ const sendRequest = (onSuccess, onFail, method, body) => {
 const getData = (onSuccess, onFail, method = 'GET') => sendRequest(onSuccess, onFail, method);
 const sendData = (onSuccess, onFail, method = 'POST', body) => sendRequest(onSuccess, onFail, method, body);
 
-export {getData, sendData};*/
+export {getData, sendData };

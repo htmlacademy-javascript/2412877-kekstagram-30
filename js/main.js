@@ -1,8 +1,20 @@
 import {getData} from './api.js';
-import {renderPictures} from './renderPictures.js';
-import {setImgUploadFormSubmit} from './image-upload-form.js';
-import {showDataErrorMessage, showStatusMessage} from './status-messages.js';
+import {renderPictures} from './renderPhoto.js';
+import {showDataErrorMessage} from './messages.js';
+import './filters.js';
 
-getData(renderPictures, showDataErrorMessage);
+let photos = [];
 
-setImgUploadFormSubmit(showStatusMessage);
+const onSuccess = (data) => {
+
+  photos = data.slice();
+
+  renderPictures(photos);
+
+  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
+
+};
+
+getData(onSuccess, showDataErrorMessage);
+
+export {photos};
