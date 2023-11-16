@@ -1,4 +1,4 @@
-import {getData} from './api.js';
+import {loadData} from './api.js';
 import {renderPictures} from './renderPhoto.js';
 import {showDataErrorMessage} from './messages.js';
 import './filters.js';
@@ -15,6 +15,6 @@ const onSuccess = (data) => {
 
 };
 
-getData(onSuccess, showDataErrorMessage);
+loadData(onSuccess, showDataErrorMessage);
 
 export {photos};

@@ -1,4 +1,4 @@
-import {debounce, shuffleArray, sortCommentsArray} from './utils.js';
+import {debounce, shufflePhotos, sortPhotos} from './utils.js';
 import {renderPictures} from './renderPhoto.js';
 import {photos} from './main.js';
 
@@ -10,8 +10,8 @@ const imgFiltersForm = imgFilters.querySelector('.img-filters__form');
 
 const availableFilters = {
   'filter-default': () => photos.slice(),
-  'filter-random': () => shuffleArray(photos.slice()).slice(0, SHUFFLED_PHOTOS_COUNT),
-  'filter-discussed': () => sortCommentsArray(photos.slice())
+  'filter-random': () => shufflePhotos(photos.slice()).slice(0, SHUFFLED_PHOTOS_COUNT),
+  'filter-discussed': () => sortPhotos(photos.slice())
 };
 
 const isButton = (evt) => evt.target.tagName === 'BUTTON';

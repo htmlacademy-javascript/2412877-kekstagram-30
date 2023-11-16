@@ -3,10 +3,10 @@ import {onMinusButtonClick, onPlusButtonClick} from './scale-photo.js';
 import {getErrorMessage, validateHashtags} from './hastags-validation.js';
 import {sliderField, image} from './apply-effects.js';
 import {onSuccess, onFail} from './messages.js';
-import {sendData} from './api.js';
+import {uploadData} from './api.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
-const COMMENT_FIELD_ERROR = 'Длина вашего комментария больше 140 символов';
+const COMMENT_FIELD_ERROR = 'Длина комментария больше 140 символов';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadInput = imgUploadForm.querySelector('.img-upload__input');
@@ -106,11 +106,7 @@ const validateCommentMessage = (value) => value.length <= 140;
 pristine.addValidator(imgEditCommentArea, validateCommentMessage, COMMENT_FIELD_ERROR);
 
 const ohHashtagInput = () => {
-  if (pristine.validate()) {
-    imgEditSubmitButton.disabled = false;
-  } else {
-    imgEditSubmitButton.disabled = true;
-  }
+  imgEditSubmitButton.disabled = !pristine.validate();
 };
 
 imgEditHashtagsInput.addEventListener('input', ohHashtagInput);
@@ -120,9 +116,8 @@ const blockSubmitButton = () => {
 };
 
 const unblockSubmitButton = () => {
-  document.querySelector('.img-upload__submit').disabled = false;
+  imgEditSubmitButton.disabled = false;
 };
-
 
 imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -133,7 +128,7 @@ imgUploadForm.addEventListener('submit', (evt) => {
     const formData = new FormData(evt.target);
     blockSubmitButton();
 
-    sendData(onSuccess, onFail, 'POST', formData);
+    uploadData(onSuccess, onFail, 'POST', formData);
   }
 });
 
