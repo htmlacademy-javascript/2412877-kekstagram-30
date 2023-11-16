@@ -1,4 +1,4 @@
-const SCALE_STEPS = 25;
+const SCALE_STEP = 25;
 const SCALE_MAX_VALUE = 100;
 const SCALE_MIN_VALUE = 25;
 
@@ -7,7 +7,7 @@ const defaultImg = document.querySelector('.img-upload__preview img');
 
 
 const scalePicture = (factor = 1) => {
-  let scaleControlInputValue = parseInt(scaleControlInput.value, 10) + (SCALE_STEPS * factor);
+  let scaleControlInputValue = parseInt(scaleControlInput.value, 10) + (SCALE_STEP * factor);
 
   if (scaleControlInputValue < SCALE_MIN_VALUE) {
     scaleControlInputValue = SCALE_MIN_VALUE;
