@@ -1,6 +1,6 @@
-const getRandomPositiveInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+const getRandomPositiveInteger = (number1, number2) => {
+  const lower = Math.ceil(Math.min(Math.abs(number1), Math.abs(number2)));
+  const upper = Math.floor(Math.max(Math.abs(number1), Math.abs(number2)));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
@@ -9,7 +9,7 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const debounce = (callback, timeoutDelay = 500) => {
+const getDebounce = (callback, timeoutDelay = 500) => {
 
   let timeoutId;
 
@@ -22,7 +22,7 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-//Перемешивание элементов массива в случайном порядке
+
 const shufflePhotos = (photos) => {
   for (let i = photos.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -31,11 +31,11 @@ const shufflePhotos = (photos) => {
   return photos;
 };
 
-//Сортировка массива по убыванию комментариев
+
 const sortPhotos = (photos) => {
-  photos.sort((a, b) => b.comments.length - a.comments.length);
+  photos.sort((primary, secondary) => secondary.comments.length - primary.comments.length);
 
   return photos;
 };
 
-export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, debounce, shufflePhotos, sortPhotos};
+export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, getDebounce, shufflePhotos, sortPhotos};

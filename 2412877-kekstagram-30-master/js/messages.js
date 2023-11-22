@@ -20,13 +20,13 @@ const closeMessage = () => {
   message.remove();
 };
 
-const onEscKeydown = (evt) => {
+const getEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
     closeMessage();
 
-    document.removeEventListener('keydown', onEscKeydown);
+    document.removeEventListener('keydown', getEscKeydown);
     document.removeEventListener('click', onMouseButtonClick);
 
     document.querySelector('.img-upload__submit').blur();
@@ -41,7 +41,7 @@ function onMouseButtonClick (evt) {
     closeMessage();
 
     document.removeEventListener('click', onMouseButtonClick);
-    document.removeEventListener('keydown', onEscKeydown);
+    document.removeEventListener('keydown', getEscKeydown);
   }
 }
 
@@ -51,17 +51,17 @@ const showStatusMessage = (messageType) => {
   fragment.append(messageType);
   document.body.append(fragment);
 
-  document.addEventListener('keydown', onEscKeydown);
+  document.addEventListener('keydown', getEscKeydown);
   document.addEventListener('click', onMouseButtonClick);
 };
 
-const onSuccess = () => {
+const getSuccess = () => {
   showStatusMessage(successMessage);
   unblockSubmitButton();
   closeImgEditModal();
 };
 
-const onFail = () => {
+const getFail = () => {
   showStatusMessage(errorMessage);
   unblockSubmitButton();
 };
@@ -77,4 +77,4 @@ const showDataErrorMessage = () => {
   }, DATA_ERROR_SHOWN_TIME);
 };
 
-export {showDataErrorMessage, onSuccess, onFail};
+export {showDataErrorMessage, getSuccess, getFail};

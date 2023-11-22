@@ -55,7 +55,7 @@ const renderComments = (comments) => {
   });
 };
 
-const onLoadCommentsClick = () => {
+const getLoadCommentsClick = () => {
   start += limit;
 
   renderComments(currentPictureComments);
@@ -70,22 +70,22 @@ const closePicture = () => {
   currentPictureComments.splice(0, currentPictureComments.length);
 };
 
-const onDocumentKeydown = (evt) => {
+const getDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
     closePicture();
 
-    document.removeEventListener('keydown', onDocumentKeydown);
-    commentsLoaderButton.removeEventListener('click', onLoadCommentsClick);
+    document.removeEventListener('keydown', getDocumentKeydown);
+    commentsLoaderButton.removeEventListener('click', getLoadCommentsClick);
   }
 };
 
-const onCloseBigPictureClick = () => {
+const getCloseBigPictureClick = () => {
   closePicture();
 
-  bigPictureCloseButton.removeEventListener('click', onCloseBigPictureClick);
-  commentsLoaderButton.removeEventListener('click', onLoadCommentsClick);
+  bigPictureCloseButton.removeEventListener('click', getCloseBigPictureClick);
+  commentsLoaderButton.removeEventListener('click', getLoadCommentsClick);
 };
 
 const openPicture = (item) => {
@@ -101,9 +101,9 @@ const openPicture = (item) => {
   bigPictureContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  document.addEventListener('keydown', onDocumentKeydown);
-  bigPictureCloseButton.addEventListener('click', onCloseBigPictureClick);
-  commentsLoaderButton.addEventListener('click', onLoadCommentsClick);
+  document.addEventListener('keydown', getDocumentKeydown);
+  bigPictureCloseButton.addEventListener('click', getCloseBigPictureClick);
+  commentsLoaderButton.addEventListener('click', getLoadCommentsClick);
 };
 
 export {openPicture, closePicture};
