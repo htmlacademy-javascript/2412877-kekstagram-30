@@ -1,4 +1,4 @@
-import {debounce, shufflePhotos, sortPhotos} from './utils.js';
+import {getDebounce, shufflePhotos, sortPhotos} from './utils.js';
 import {renderPictures} from './renderPhoto.js';
 import {photos} from './main.js';
 
@@ -16,13 +16,13 @@ const availableFilters = {
 
 const isButton = (evt) => evt.target.tagName === 'BUTTON';
 
-const onImgFiltersFormClick = debounce((evt) => {
+const onImgFiltersFormClick = getDebounce((evt) => {
   if (isButton(evt)) {
     renderPictures(availableFilters[evt.target.id]());
   }
 });
 
-const onButtonClick = (evt) => {
+const getButtonClick = (evt) => {
   if (isButton(evt)) {
     const selectedButton = imgFiltersForm.querySelector(`.${ACTIVE_CLASS}`);
 
@@ -35,4 +35,4 @@ const onButtonClick = (evt) => {
 };
 
 imgFiltersForm.addEventListener('click', onImgFiltersFormClick);
-imgFiltersForm.addEventListener('click', onButtonClick);
+imgFiltersForm.addEventListener('click', getButtonClick);

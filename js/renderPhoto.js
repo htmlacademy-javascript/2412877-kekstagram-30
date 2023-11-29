@@ -33,13 +33,13 @@ const renderPictures = (photos) => {
     const thumbnail = renderPicture(item);
     picturesFragment.append(thumbnail);
 
-    const onThumbnailClick = (evt) => {
+    const getThumbnailClick = (evt) => {
       evt.preventDefault();
 
       openPicture(item);
     };
 
-    thumbnail.addEventListener('click', onThumbnailClick);
+    thumbnail.addEventListener('click', getThumbnailClick);
   });
 
   clearPictures();

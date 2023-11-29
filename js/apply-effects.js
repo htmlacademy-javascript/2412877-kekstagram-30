@@ -54,13 +54,13 @@ const applyEffect = (effect, filter, options, unit = '') => {
 
 const effectsMap = {
   'effect-none': {
-    action: () => {
+    doAction: () => {
       sliderField.classList.add('hidden');
       image.style.filter = 'none';
     }
   },
   'effect-chrome': {
-    action: () => {
+    doAction: () => {
       applyEffect('chrome', 'grayscale', {
         range: { min: Slider.MIN, max: MAX_GRAYSCALE },
         step: Slider.STEP_DECIMAL,
@@ -69,7 +69,7 @@ const effectsMap = {
     }
   },
   'effect-sepia': {
-    action: () => {
+    doAction: () => {
       applyEffect('sepia', 'sepia', {
         range: { min: Slider.MIN, max: MAX_SEPIA },
         step: Slider.STEP_DECIMAL,
@@ -78,7 +78,7 @@ const effectsMap = {
     }
   },
   'effect-marvin': {
-    action: () => {
+    doAction: () => {
       applyEffect('marvin', 'invert', {
         range: { min: Slider.MIN, max: Slider.MAX },
         step: Slider.STEP,
@@ -87,7 +87,7 @@ const effectsMap = {
     }
   },
   'effect-phobos': {
-    action: () => {
+    doAction: () => {
       applyEffect('phobos', 'blur', {
         range: { min: Slider.MIN, max: MAX_BLUR_VALUE },
         step: Slider.STEP_DECIMAL,
@@ -96,7 +96,7 @@ const effectsMap = {
     }
   },
   'effect-heat': {
-    action: () => {
+    doAction: () => {
       applyEffect('heat', 'brightness', {
         range: { min: MIN_BRIGHTNESS, max: MAX_BRIGHTNESS },
         step: Slider.STEP_DECIMAL,
@@ -106,15 +106,15 @@ const effectsMap = {
   }
 };
 
-const onEffectsListClick = (evt) => {
+const getEffectsListClick = (evt) => {
   const effectId = evt.target.id;
   const effect = effectsMap[effectId];
 
   if (effect) {
-    effect.action();
+    effect.doAction();
   }
 };
 
-effectsList.addEventListener('click', onEffectsListClick);
+effectsList.addEventListener('click', getEffectsListClick);
 
 export {sliderField, image};

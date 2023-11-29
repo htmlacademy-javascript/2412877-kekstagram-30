@@ -21,12 +21,13 @@ const scalePicture = (factor = 1) => {
   defaultImg.style.transform = `scale(${scaleControlInputValue / 100})`;
 };
 
-const onMinusButtonClick = () => {
+const getMinusButtonClick = () => {
   scalePicture(-1);
 };
 
-const onPlusButtonClick = () => {
+const getPlusButtonClick = () => {
   scalePicture();
 };
 
-export {onMinusButtonClick, onPlusButtonClick};
+export {getMinusButtonClick, getPlusButtonClick};
+
