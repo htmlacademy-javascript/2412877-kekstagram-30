@@ -1,8 +1,8 @@
 import { isEscapeKey } from './utils.js';
-import {onMinusButtonClick, onPlusButtonClick} from './scale-photo.js';
+import {getMinusButtonClick, getPlusButtonClick} from './scale-photo.js';
 import {getErrorMessage, validateHashtags} from './hastags-validation.js';
 import {sliderField, image} from './apply-effects.js';
-import {onSuccess, onFail} from './messages.js';
+import {getSuccess, getFail} from './messages.js';
 import {uploadData} from './api.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
@@ -43,7 +43,7 @@ const resetForm = () => {
   image.style.filter = 'none';
 };
 
-const onEscKeydown = (evt) => {
+const getEscKeydown = (evt) => {
 
   if (isEscapeKey(evt) &&
   !evt.target.classList.contains('text__hashtags') &&
@@ -55,7 +55,7 @@ const onEscKeydown = (evt) => {
   }
 };
 
-const onImgEditCloseButtonClick = () => {
+const getImgEditCloseButtonClick = () => {
   closeImgEditModal();
 };
 
@@ -65,8 +65,8 @@ function closeImgEditModal () {
 
   resetForm();
 
-  imgEditCloseButton.removeEventListener('click', onImgEditCloseButtonClick);
-  document.removeEventListener('keydown', onEscKeydown);
+  imgEditCloseButton.removeEventListener('click', getImgEditCloseButtonClick);
+  document.removeEventListener('keydown', getEscKeydown);
 }
 
 const openImgEditModal = () => {
@@ -74,7 +74,7 @@ const openImgEditModal = () => {
   document.body.classList.add('modal-open');
 };
 
-const onImgUploadButtonChange = () => {
+const getImgUploadButtonChange = () => {
   openImgEditModal();
 
   const file = imgUploadInput.files[0];
@@ -90,14 +90,14 @@ const onImgUploadButtonChange = () => {
     });
   }
 
-  imgEditCloseButton.addEventListener('click', onImgEditCloseButtonClick);
-  document.addEventListener('keydown', onEscKeydown);
+  imgEditCloseButton.addEventListener('click', getImgEditCloseButtonClick);
+  document.addEventListener('keydown', getEscKeydown);
 };
 
-imgUploadInput.addEventListener('change', onImgUploadButtonChange);
+imgUploadInput.addEventListener('change', getImgUploadButtonChange);
 
-minusButton.addEventListener('click', onMinusButtonClick);
-plusButton.addEventListener('click', onPlusButtonClick);
+minusButton.addEventListener('click', getMinusButtonClick);
+plusButton.addEventListener('click', getPlusButtonClick);
 
 pristine.addValidator(imgEditHashtagsInput, validateHashtags, getErrorMessage);
 
@@ -105,18 +105,20 @@ const validateCommentMessage = (value) => value.length <= 140;
 
 pristine.addValidator(imgEditCommentArea, validateCommentMessage, COMMENT_FIELD_ERROR);
 
-const ohHashtagInput = () => {
+const getHashtagInput = () => {
   imgEditSubmitButton.disabled = !pristine.validate();
 };
 
-imgEditHashtagsInput.addEventListener('input', ohHashtagInput);
+imgEditHashtagsInput.addEventListener('input', getHashtagInput);
 
-const blockSubmitButton = () => {
-  imgEditSubmitButton.disabled = true;
-};
+
 
 const unblockSubmitButton = () => {
   imgEditSubmitButton.disabled = false;
+};
+
+const blockSubmitButton = () => {
+  imgEditSubmitButton.disabled = true;
 };
 
 imgUploadForm.addEventListener('submit', (evt) => {
@@ -128,7 +130,7 @@ imgUploadForm.addEventListener('submit', (evt) => {
     const formData = new FormData(evt.target);
     blockSubmitButton();
 
-    uploadData(onSuccess, onFail, 'POST', formData);
+    uploadData(getSuccess, getFail, 'POST', formData);
   }
 });
 

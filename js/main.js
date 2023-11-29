@@ -5,7 +5,7 @@ import './filters.js';
 
 let photos = [];
 
-const onSuccess = (data) => {
+const getSuccess = (data) => {
 
   photos = data.slice();
 
@@ -15,6 +15,6 @@ const onSuccess = (data) => {
 
 };
 
-loadData(onSuccess, showDataErrorMessage);
+loadData(getSuccess, showDataErrorMessage);
 
 export {photos};
